@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Logged In - DNS Records App</title>
+    <style>
+        body {
+            background-color: #f2f2f2;
+            font-family: Arial, sans-serif;
+        }
+        .header {
+            background-color: #333;
+            color: #fff;
+            padding: 10px;
+        }
+        h1, h2, h3 {
+            margin-top: 0;
+            text-align: center;
+        }
+        .container {
+            max-width: 800px;
+            margin: auto;
+            padding: 10px;
+        }
+        .dns-record {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-color: #fff;
+            padding: 10px;
+            border-radius: 5px;
+            margin-bottom: 10px;
+        }
+        .dns-record span {
+            margin-right: 10px;
+        }
+        .add-record-form {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-color: #fff;
+            padding: 10px;
+            border-radius: 5px;
+            margin-bottom: 10px;
+        }
+        .add-record-form input[type="text"] {
+            flex-grow: 1;
+            margin-right: 10px;
+            padding: 5px;
+            border-radius: 3px;
+            border: 1px solid #ccc;
+        }
+        .add-record-form input[type="submit"] {
+            background-color: #333;
+            color: #fff;
+            padding: 5px 10px;
+            border-radius: 3px;
+            border: none;
+            cursor: pointer;
+        }
+        th {
+            background-color: #333;
+            color: #fff;
+            padding: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="header" align="center">
+        <img src="https://www.hiltron.it/security/wp-content/uploads/sites/3/2020/12/DDNS.png" alt="DNS Records App" width="300" height="200">
+    </div>
+	<div class="container">
+    <h1>Welcome, {{ result.user.name }}</h1>
+    <h2>Email: {{ result.user.email }}</h2>
+    <h2 style="font-size: 12px; padding: 5px;">Token: {{ result.user.credentials.token }}</h2>
+    <h3>DNS Records:</h3>
+    <table>
+        <thead>
+            <tr>
+                <th>Domain Name</th>
+                <th>IP Address</th>
+                <th>Last Change</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for record in dns_records %}
+            <tr>
+                <td>{{ record.domain_name }}</td>
+                <td><input type="text" name="ip_address" value="{{ record.ip_address }}"></td>
+                <td>{{ record.last_change }}</td>
+                <td>
+                    <form action="{{ url_for('update_record')}}" method="POST">
+                        <input type="hidden" name="domain_name" value="{{ record.domain_name }}">
+                        <input type="text" name="new_ip_address" value="">
+                        <input type="submit" style="background-color: cornflowerblue; color: white;" value="Update">
+                    </form>
+                </td>
+                <td>
+                    <form action="{{ url_for('remove_record') }}" method="POST">
+                        <input type="hidden" name="domain_name" value="{{ record.domain_name }}">
+                        <input type="hidden" name="_method" value="DELETE">
+                        <input type="submit" style="background-color: red; color: white;" value="Remove">
+                    </form>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <div class="add-record-form">
+            <form action="{{ url_for('add_record') }}" method="POST">
+                <input type="text" name="domain_name" placeholder="Domain Name">
+                <input type="text" name="ip_address" placeholder="IPv4 Address">
+                <input type="submit" value="Add">
+            </form>
+        </div>
+    </div>
+</body>
+</html>

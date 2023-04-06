@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>DNS Records App</title>
+    <style>
+        body {
+            background-color: #f2f2f2;
+            font-family: Arial, sans-serif;
+        }
+        .header {
+            background-color: #333;
+            color: #fff;
+            padding: 10px;
+        }
+        h1, h2, h3 {
+            margin-top: 0;
+            text-align: center;
+        }
+        .container {
+            max-width: 800px;
+            margin: auto;
+            padding: 10px;
+        }
+        .login-button {
+            display: block;
+            width: 100%;
+            max-width: 400px;
+            margin: 20px auto;
+            padding: 10px;
+            background-color: #333;
+            color: #fff;
+            text-align: center;
+            text-decoration: none;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div class="header" align="center">
+        <img src="https://www.hiltron.it/security/wp-content/uploads/sites/3/2020/12/DDNS.png" alt="DNS Records App" width="550" height="350">
+    </div>
+    <div class="container">
+        <br>
+        <h1>Welcome to DNS Records App</h1>
+        <br>
+<!--        <p style="color: red">Login to continue:</p>-->
+        <a href="{{ url_for('login', provider_name='google') }}" class="login-button"  style="background-color: indianred" >Log in with Google</a>
+        <a href="{{ url_for('login', provider_name='facebook') }}" class="login-button" style="background-color: cornflowerblue">Log in with Facebook</a>
+        <a href="{{ url_for('login', provider_name='amazon') }}" class="login-button" style="background-color: saddlebrown">Log in with Amazon</a>
+        <a href="{{ url_for('login', provider_name='twitter') }}" class="login-button" style="background-color: dimgrey">Log in with Twitter</a>
+    </div>
+    <br><br><br><br><br><br>
+<footer>
+  <p>&copy; 2023 My Website. All rights reserved.</p>
+    <p>By: Ibrahem & Abdullah</p>
+</footer>
+</body>
+</html>
