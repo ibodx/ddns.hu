@@ -1,5 +1,5 @@
 ﻿aniso8601
-certifi7
+certifi
 cffi
 charset-normalizer
 click
