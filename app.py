@@ -22,7 +22,7 @@ client = pymongo.MongoClient(connection_string)
 db = client['dnsTest']
 dns_col = db['dns_records']
 
-app = Flask(__name__, template_folder='/root/testApp')
+app = Flask(__name__, template_folder='/root/ddnsApp')
 api = Api(app)
 app.secret_key = 'super secret key'
 dnsserver_ip = '10.20.10.249'
