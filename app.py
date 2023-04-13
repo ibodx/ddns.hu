@@ -9,24 +9,21 @@ from pymongo import MongoClient, collection
 import authomatic
 from oauth_config import CONFIG
 from datetime import datetime
-import dns
-import dns.resolver
-import dns.update
+
 
 # Instantiate Authomatic.
 authomatic = Authomatic(CONFIG, '<secret>', report_errors=False)
 
 # Connect to MongoDB
-connection_string = "mongodb+srv://<user-name>:<password>@<cluster-link>/"
+connection_string = "mongodb+srv://ibrahemalloush:Welkom1@clustertest.umprcd2.mongodb.net/"
 client = pymongo.MongoClient(connection_string)
-db = client['<db-name>']
-dns_col = db['<collection>']
+db = client['dnsTest']
+dns_col = db['dns_records']
 
-app = Flask(__name__, template_folder='<path/to/app-folder>')
+app = Flask(__name__, template_folder='/root/testApp')
 api = Api(app)
 app.secret_key = 'super secret key'
-dnsserver_ip = '<ipv4>'
-zone = '<zone-name>'
+
 
 @app.route('/')
 def index():
@@ -83,21 +80,6 @@ def add_record():
               'last_change': now}
     dns_col.insert_one(record)
 
-    # Add the A record to the DNS server
-    resolver = dns.resolver.Resolver()
-    resolver.nameservers = [dnsserver_ip]
-    update = dns.update.Update(zone)
-    update.add(domain_name, 86400, dns.rdatatype.A, ip_address)
-    response = dns.query.tcp(update, dnsserver_ip,timeout=5)
-    print(response)
-
-    # Thaw the zone
-    subprocess.run(['rndc', 'thaw', 'ddns.org'])
-   
-    # Execute rndc sync command
-    result = subprocess.run(['rndc', 'sync', zone])
-
-   # Redirect the user back to the main page
     return redirect(url_for('index'))
 
 @app.route('/update_record', methods=['POST'])
@@ -114,20 +96,7 @@ def update_record():
     dns_col.update_one({'email': email, 'domain_name': domain_name}, {'$set': {'ip_address': new_ip_address}})
     print(new_ip_address)
 
-    # Update the A record in the DNS server
-    resolver = dns.resolver.Resolver()
-    resolver.nameservers = [dnsserver_ip]
-    update = dns.update.Update(zone)
-    update.replace(domain_name.rstrip('.ddns.org'),86400, dns.rdatatype.A, new_ip_address)
-    response = dns.query.tcp(update, dnsserver_ip, timeout=5)
-    print(response)
-
-    # Thaw the zone
-    subprocess.run(['rndc', 'thaw', zone])
-
-    # Execute rndc sync command
-    result = subprocess.run(['rndc', 'sync', zone])
-
+ 
     # Redirect the user back to the main page
     return redirect(url_for('index'))
 
@@ -148,20 +117,7 @@ def remove_record():
     # Query the DNS records associated with the logged-in user's email
     dns_records = list(dns_col.find({'email': email}))
 
-    # remove records from the DNS server
-    resolver = dns.resolver.Resolver()
-    resolver.nameservers = [dnsserver_ip]
-    update = dns.update.Update(zone)
-    update.delete(domain_name.rstrip('.ddns.org'))
-    response = dns.query.tcp(update, dnsserver_ip, timeout=5)
-    print(response)
-
-    # Thaw the zone
-    subprocess.run(['rndc', 'thaw', zone])
-
-    # Execute rndc sync command
-    result = subprocess.run(['rndc', 'sync', zone])
-
+ 
     # Redirect the user back to the main page
     return redirect(url_for('index'))
 
@@ -194,19 +150,6 @@ class UpdateDNSRecord(Resource):
 
         if dns_record is not None:
             result = dns_col.update_one({'domain_name': domain_name}, {'$set': {'ip_address': new_ip_address}})
-
-            # update records in DNS server:
-            resolver = dns.resolver.Resolver()
-            resolver.nameservers = [dnsserver_ip]
-            update = dns.update.Update(zone)
-            update.replace(domain_name.rstrip('.ddns.org'), 86400, dns.rdatatype.A, new_ip_address)
-            response = dns.query.tcp(update, dnsserver_ip, timeout=5)
-            
-            # Thaw the zone
-            subprocess.run(['rndc', 'thaw', 'ddns.org'])
-            
-            # Execute rndc sync command
-            result = subprocess.run(['rndc', 'sync', zone])
             if response.rcode() == dns.rcode.NOERROR:
                 return {'message': 'A record updated successfully. New IP now is: {}'.format( new_ip_address)}
             else:
