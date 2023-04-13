@@ -20,11 +20,16 @@ The DDNS app allows users to:
 - Use the API to update the IP address of an existing DNS record.
 
 API Usage
-The DDNS app includes a RESTful API that enables users to update existing DNS records. To use the API, send a PUT request to /api/update_record, including the following parameters in the request body:
+The DDNS app includes a RESTful API that enables users to update existing DNS records. To use the API, send a PUT request to /api/update_dns_record, including the following parameters in the request body:
 
 - domain_name: The domain name associated with the DNS record to update.
 - ip_address: The new IP address to associate with the DNS record.
-
-In addition, you must include an Authorization header with a valid access token for the DNS record you wish to update.
+- token you have gotten after logging in that is associated with your e-mail address
 
 If the update is successful, the API will return a response with a status code of 200. Otherwise, it will return a response with an appropriate error code and message.
+
+
+Example:
+
+If you add a new dns record (subdomain) - let's say 'test.com'; this will then be added as a FQDN eg. 'test.com.ddns.org' with the ip-address you provided. 
+So you actually don't need to fully write the whole FQDN when adding it throug the website or the API. The backend code will take care of the rest.
