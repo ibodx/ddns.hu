@@ -14,19 +14,19 @@ import dns.resolver
 import dns.update
 
 # Instantiate Authomatic.
-authomatic = Authomatic(CONFIG, 'Welkom#1', report_errors=False)
+authomatic = Authomatic(CONFIG, '<secret>', report_errors=False)
 
 # Connect to MongoDB
-connection_string = "mongodb+srv://ibrahemalloush:Welkom1@clustertest.umprcd2.mongodb.net/"
+connection_string = "mongodb+srv://<user-name>:<password>@<cluster-link>/"
 client = pymongo.MongoClient(connection_string)
-db = client['dnsTest']
-dns_col = db['dns_records']
+db = client['<db-name>']
+dns_col = db['<collection>']
 
-app = Flask(__name__, template_folder='/root/ddnsApp')
+app = Flask(__name__, template_folder='<path/to/app-folder>')
 api = Api(app)
 app.secret_key = 'super secret key'
-dnsserver_ip = '10.20.10.249'
-zone = 'ddns.org'
+dnsserver_ip = '<ipv4>'
+zone = '<zone-name>'
 
 @app.route('/')
 def index():
@@ -79,7 +79,7 @@ def add_record():
     now = datetime.now().strftime("%Y-%m-%d %H:%M")
 
     # Insert the new record into the MongoDB collection
-    record = {'email': email, 'domain_name': domain_name + '.ddns.org', 'ip_address': ip_address, 'access_token': token,
+    record = {'email': email, 'domain_name': domain_name + '<dns-zone eg.ddns.org>', 'ip_address': ip_address, 'access_token': token,
               'last_change': now}
     dns_col.insert_one(record)
 
@@ -201,8 +201,10 @@ class UpdateDNSRecord(Resource):
             update = dns.update.Update(zone)
             update.replace(domain_name.rstrip('.ddns.org'), 86400, dns.rdatatype.A, new_ip_address)
             response = dns.query.tcp(update, dnsserver_ip, timeout=5)
+            
             # Thaw the zone
             subprocess.run(['rndc', 'thaw', 'ddns.org'])
+            
             # Execute rndc sync command
             result = subprocess.run(['rndc', 'sync', zone])
             if response.rcode() == dns.rcode.NOERROR:
