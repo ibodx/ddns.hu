@@ -31,5 +31,5 @@ If the update is successful, the API will return a response with a status code o
 
 Example: (It might be handy to take a look at the screendumps)
 
-If you add a new dns record (subdomain) - let's say 'test.com'; this will then be added as a FQDN eg. 'test.com.ddns.org' with the ip-address you provided. 
+If you add a new dns record (subdomain) - let's say 'test.com'; this will then be added as a FQDN eg. 'test.com.ddns.org' (in my case 'ddns.org') with the ip-address you provided. 
 So you actually don't need to fully write the whole FQDN when adding it throug the website or the API. The backend code will take care of the rest.
