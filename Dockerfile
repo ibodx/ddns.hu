@@ -25,4 +25,22 @@ ENV zone=<your_zone_name>
 
 EXPOSE 443
 
-CMD ["python3", "app.py"]
+RUN touch /etc/systemd/system/ddnsApp.service && \
+    echo "[Unit]
+Description=Flask Application
+After=network.target
+
+[Service]
+User=root
+WorkingDirectory=/root/ddnsApp
+ExecStart=/usr/bin/python3 /root/ddnsApp/app.py
+Restart=always
+
+[Install]
+WantedBy=multi-user.target" > /etc/systemd/system/ddnsApp.service
+
+RUN systemctl daemon-reload && \
+    systemctl enable ddnsApp.service && \
+    systemctl start ddnsApp.service
+
+
