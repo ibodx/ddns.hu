@@ -7,7 +7,7 @@ To run the app, follow these steps:
 
 1. Install the required Python packages listed in requirements.txt.
 2. Set up a MongoDB database and update the connection_string variable in the app.py file with your database connection string.
-3. Create an oauth_config.py file with your authentication provider's configuration details. Refer to the config.py.example file for an example of how to structure this file.
+3. Create an oauth_config.py file with your authentication provider's configuration details. Refer to the oauth_config.py file for an example of how to structure this file.
 4. Run the app by executing the app.py file.
 
 Features
