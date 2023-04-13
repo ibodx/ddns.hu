@@ -1,6 +1,6 @@
 DDNS App
 
-This is a dynamic DNS (DDNS) app that allows users to update their IP address and domain name in a MongoDB database. The app uses Flask for web development and Authomatic for authentication. The app also includes a RESTful API, which enables users to update existing DNS records.
+This is a dynamic DNS (DDNS) app that allows users to associate a dynamic IP address (which changes frequently) with a static hostname. This enables you to access devices or services on your home network, such as a web server or a remote desktop, using a memorable hostname (e.g., myserver.duckdns.org) instead of having to remember a string of numbers (i.e., the IP address). For storing data I was using MongoDB Atlas database (Cloud version). The app uses Flask for web development and Authomatic for Oauth 2.0 authentication. The app also includes a RESTful API, which enables users to update existing DNS records.
 
 Getting Started
 To run the app, follow these steps:
@@ -14,7 +14,7 @@ Features
 The DDNS app allows users to:
 
 - Log in with various authentication providers.
-- Add new DNS records to the database by entering a domain name and IP address.
+- Add new DNS records by entering a domain name and IP address.
 - Update the IP address of an existing DNS record by specifying the domain name and new IP address.
 - Remove an existing DNS record by specifying the domain name.
 - Use the API to update the IP address of an existing DNS record.
