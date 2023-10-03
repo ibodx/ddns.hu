@@ -2,7 +2,7 @@
  
 This is a dynamic DNS (DDNS) app that allows users to associate a dynamic IP address (which changes frequently) with a static hostname. This enables you to access devices or services on your home network, such as a web server or a remote desktop, using a memorable hostname (e.g., myserver.ddns.org) instead of having to remember a string of numbers (i.e., the IP address). For storing data I was using MongoDB Atlas database (Cloud version). The app uses Flask for web development and Authomatic for Oauth 2.0 authentication. The app also includes a RESTful API, which enables users to update existing DNS records.
 
-Getting Started
+## Getting Started
 To run the app, follow these steps:
 
 1. Install the required Python packages listed in requirements.txt.
@@ -10,7 +10,7 @@ To run the app, follow these steps:
 3. Create an oauth_config.py file with your authentication provider's configuration details. Refer to the oauth_config.py file for an example of how to structure this file.
 4. Run the app by executing the app.py file.
 
-Features
+## Features
 The DDNS app allows users to:
 
 - Log in with various authentication providers.
@@ -19,7 +19,7 @@ The DDNS app allows users to:
 - Remove an existing DNS record by specifying the domain name.
 - Use the API to update the IP address of an existing DNS record.
 
-API Usage
+## API Usage
 The DDNS app includes a RESTful API that enables users to update existing DNS records. To use the API, send a PUT request to /api/update_dns_record, including the following parameters in the request body:
 
 - domain_name: The domain name associated with the DNS record to update.
